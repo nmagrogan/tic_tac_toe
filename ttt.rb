@@ -50,20 +50,25 @@ class Game
   def initialize
     @board = GameBoard.new
     @gameover = false
+    @turns = 0
   end
 
-  def turn
+  def play
     # each player places a mark on the board
-    until @gameover
-      @board.display_board
-      @board.mark(@@player1)
-      #@gameover = @board.check
-      @board.display_board
-      @board.mark(@@player2)
-      #@gameover = @board.check
+    turn(@@player1)
+    until @gameover || @turns > 8
+      turn(@@player2)
+      turn(@@player1)
     end
+  end
+
+  def turn(player)
+    @board.display_board
+    @board.mark(player)
+    # @board.check
+    @turns += 1
   end
 end
 
 my_game = Game.new
-my_game.turn
+my_game.play
