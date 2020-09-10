@@ -1,5 +1,6 @@
 # frozen_string_literal: false
 
+require 'pry'
 # Game board class that will keep track of the game board
 class GameBoard
   def initialize
@@ -12,6 +13,35 @@ class GameBoard
 
   def display_board
     @board.each { |row| p row }
+  end
+
+  def player_won?
+    # checks if a player has won the game
+    # checks if a line has been filled completly with one players marks
+    # check rows
+    # check columns
+    # check diagonals
+    # if a line is made return true
+    @board.each_with_index do |row, index|
+      column = [@board[0][index], @board[1][index], @board[2][index]]
+
+      unless row.include?('_') && column.include?('_')
+        row_win = check_line(row)
+        column_win = check_line(column)
+        return true if column_win || row_win
+      end
+    end
+    false
+  end
+
+  def check_line(line)
+    if !line.include? 'x'
+      true
+    elsif !line.include? 'o'
+      true
+    else
+      false
+    end
   end
 
   def mark(player)
@@ -57,16 +87,20 @@ class Game
     # each player places a mark on the board
     turn(@@player1)
     until @gameover || @turns > 8
-      turn(@@player2)
-      turn(@@player1)
+      break if turn(@@player2)
+      break if turn(@@player1)
     end
   end
 
   def turn(player)
     @board.display_board
     @board.mark(player)
-    # @board.check
+    if @board.player_won?
+      puts "#{player.symbol} has won the game"
+      return true
+    end
     @turns += 1
+    false
   end
 end
 
