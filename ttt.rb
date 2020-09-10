@@ -21,7 +21,7 @@ class GameBoard
     # check rows
     # check columns
     # check diagonals
-    # if a line is made return true
+    # if a line is full of one symbol return true
     @board.each_with_index do |row, index|
       column = [@board[0][index], @board[1][index], @board[2][index]]
 
@@ -46,11 +46,16 @@ class GameBoard
 
   def mark(player)
     # marks a place spot on the board
-    puts "#{player.symbol}: input x coordinate: "
-    x_cord = gets.chop.to_i
+    good_placement = false
+    until good_placement
+      puts "#{player.symbol}: input x coordinate: "
+      x_cord = gets.chop.to_i
 
-    puts "#{player.symbol}: input y coordinate: "
-    y_cord = gets.chomp.to_i
+      puts "#{player.symbol}: input y coordinate: "
+      y_cord = gets.chomp.to_i
+
+      @board[y_cord][x_cord] == '_' ? good_placement = true : puts('Spot already taken, try again.')
+    end
 
     @board[y_cord][x_cord] = player.symbol
   end
