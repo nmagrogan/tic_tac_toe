@@ -26,11 +26,18 @@ class GameBoard
       column = [@board[0][index], @board[1][index], @board[2][index]]
 
       unless row.include?('_') && column.include?('_')
-        row_win = check_line(row)
-        column_win = check_line(column)
-        return true if column_win || row_win
+        return true if check_line(row)
+        return true if check_line(column)
       end
     end
+
+    # check diagonals, only 2 diagonals so I cant do it with the above loop
+    diagonal = [@board[0][0], @board[1][1], @board[2][2]]
+    return true if check_line(diagonal) && !diagonal.include?('_')
+
+    diagonal = [@board[2][0], @board[1][1], @board[0][2]]
+    return true if check_line(diagonal) && !diagonal.include?('_')
+
     false
   end
 
