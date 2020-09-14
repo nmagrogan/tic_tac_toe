@@ -3,6 +3,7 @@
 require 'pry'
 # Game board class that will keep track of the game board
 class GameBoard
+  attr_accessor :board
   def initialize
     @board = [
       ['_', '_', '_'],
@@ -25,8 +26,11 @@ class GameBoard
     @board.each_with_index do |row, index|
       column = [@board[0][index], @board[1][index], @board[2][index]]
 
-      unless row.include?('_') && column.include?('_')
+      unless row.include?('_')
         return true if check_line(row)
+      end
+
+      unless column.include?('_')
         return true if check_line(column)
       end
     end
@@ -116,5 +120,6 @@ class Game
   end
 end
 
-my_game = Game.new
-my_game.play
+# commented out for testing
+# my_game = Game.new
+# my_game.play
